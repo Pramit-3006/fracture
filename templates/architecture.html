@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% set active = "architecture" %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="page-title">System Architecture</h1>
+
+    <div class="section-block">
+        <h2 class="section-title">Technical Pipeline</h2>
+        <div class="arch-flow">
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 1</span>
+                <div>
+                    <div class="arch-stage-title">Input Acquisition</div>
+                    <div class="arch-stage-desc">Digital wrist radiographs X ∈ R^(640×640). Converted to grayscale. Normalized to standard intensity range.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 2</span>
+                <div>
+                    <div class="arch-stage-title">FCET Enhancement</div>
+                    <div class="arch-stage-desc">Feature-preserving Contrast Enhancement Transform. I_enh = αI + (1−α)G. Cortical edge strengthening, trabecular amplification, fracture line visibility enhancement.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 3</span>
+                <div>
+                    <div class="arch-stage-title">Spatial Fuzzy C-Means Segmentation</div>
+                    <div class="arch-stage-desc">4-cluster spatial membership: Cortical bone, Trabecular bone, Soft tissue, Background. Spatial regularization u'_ik = (u_ik + S_ik) / 2. Binary bone mask generation.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 4</span>
+                <div>
+                    <div class="arch-stage-title">Cellular Radiomics Extraction</div>
+                    <div class="arch-stage-desc">First-order features (mean, entropy, energy). Texture features (GLCM contrast, homogeneity, zone percentage). Morphological features (cortical thickness, micro-fracture density, fragmentation index).</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 5</span>
+                <div>
+                    <div class="arch-stage-title">Deep Feature Encoding</div>
+                    <div class="arch-stage-desc">Input tensor X = [FCET + Fuzzy + Radiomics]. ResNet50 backbone with Global Attention Module (GAM). F' = F ⊗ A_s ⊗ A_c.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 6</span>
+                <div>
+                    <div class="arch-stage-title">YOLOv11 Fracture Detection</div>
+                    <div class="arch-stage-desc">Multi-scale prediction with bounding box regression, objectness confidence, and fracture class classification. L = L_box + L_obj + L_cls.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 7</span>
+                <div>
+                    <div class="arch-stage-title">Orthopedic Fracture Analytics</div>
+                    <div class="arch-stage-desc">Morphology classification (transverse, oblique, spiral, comminuted, greenstick). Displacement measurement. Angulation via principal axis calculation. Anatomical location mapping.</div>
+                </div>
+            </div>
+            <div class="arch-connector"></div>
+            <div class="arch-stage">
+                <span class="arch-stage-num">STAGE 8</span>
+                <div>
+                    <div class="arch-stage-title">Composite Fracture Severity Index</div>
+                    <div class="arch-stage-desc">CFSI = w₁D + w₂FI + w₃Entropy + w₄Angulation. Severity grading: Mild / Moderate / Severe. Weighted multi-factor clinical assessment.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Backend Stack</h2>
+        <table class="tech-table">
+            <tr><td>Runtime</td><td>Python + NumPy + SciPy</td></tr>
+            <tr><td>API</td><td>Flask REST API</td></tr>
+            <tr><td>Image Processing</td><td>Pillow + SciPy ndimage</td></tr>
+            <tr><td>Enhancement</td><td>FCET Engine — Adaptive contrast enhancement</td></tr>
+            <tr><td>Segmentation</td><td>Spatial Fuzzy C-Means with neighborhood regularization</td></tr>
+            <tr><td>Radiomics</td><td>First-order, texture (GLCM), morphological feature extraction</td></tr>
+            <tr><td>Detection</td><td>Edge-based fracture detection with morphological analysis</td></tr>
+            <tr><td>Analytics</td><td>Orthopedic classification + Composite Severity Index</td></tr>
+        </table>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Frontend</h2>
+        <table class="tech-table">
+            <tr><td>Markup</td><td>HTML5 semantic structure</td></tr>
+            <tr><td>Styling</td><td>CSS3 — Monochrome clinical design system</td></tr>
+            <tr><td>Interaction</td><td>Vanilla JavaScript — Zero dependencies</td></tr>
+            <tr><td>Viewer</td><td>Pan / Zoom / Multi-overlay toggle</td></tr>
+        </table>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">System Capabilities</h2>
+        <table class="tech-table">
+            <tr><td>Detection</td><td>Fracture localization with bounding boxes</td></tr>
+            <tr><td>Segmentation</td><td>Bone tissue classification and masking</td></tr>
+            <tr><td>Radiomics</td><td>Quantitative feature extraction from bone regions</td></tr>
+            <tr><td>Classification</td><td>Orthopedic fracture type identification</td></tr>
+            <tr><td>Severity</td><td>Composite multi-factor severity grading</td></tr>
+            <tr><td>Reporting</td><td>Structured clinical report generation</td></tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% set active = "metrics" %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="page-title">Research Metrics</h1>
+
+    <div class="section-block">
+        <h2 class="section-title">Pipeline Performance</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">FCET Enhancement</div>
+                <div class="metric-value">α = 0.7</div>
+                <div class="metric-detail">Contrast ratio improvement</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Fuzzy Clusters</div>
+                <div class="metric-value">K = 4</div>
+                <div class="metric-detail">Cortical / Trabecular / Soft / BG</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Radiomic Features</div>
+                <div class="metric-value">9</div>
+                <div class="metric-detail">First-order + Texture + Morphology</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Input Resolution</div>
+                <div class="metric-value">640²</div>
+                <div class="metric-detail">Standard radiograph dimension</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Severity Weights</div>
+                <div class="metric-value">W = [.3, .25, .25, .2]</div>
+                <div class="metric-detail">Disp / FI / Entropy / Angle</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Severity Grades</div>
+                <div class="metric-value">3</div>
+                <div class="metric-detail">Mild / Moderate / Severe</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Fracture Classification Schema</h2>
+        <table class="tech-table">
+            <tr><td>Transverse</td><td>Fracture line perpendicular to bone axis. Aspect ratio > 1.8</td></tr>
+            <tr><td>Oblique</td><td>Fracture line diagonal to bone axis. Aspect ratio < 0.55</td></tr>
+            <tr><td>Spiral</td><td>Twisting fracture pattern. Default classification</td></tr>
+            <tr><td>Comminuted</td><td>Multiple fragments detected. Area > 500 px</td></tr>
+            <tr><td>Greenstick</td><td>Incomplete fracture, one cortex intact. Height < 30 px</td></tr>
+        </table>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Composite Severity Index Formula</h2>
+        <div class="report-description" style="font-family: var(--font-mono); font-size: 13px;">
+            CFSI = w₁ × D_norm + w₂ × FI_norm + w₃ × Entropy_norm + w₄ × Angulation_norm<br><br>
+            D_norm = min(1.0, displacement / 10.0)<br>
+            FI_norm = min(1.0, fragmentation_index / 5.0)<br>
+            Entropy_norm = min(1.0, entropy / 8.0)<br>
+            Ang_norm = min(1.0, angulation / 45.0)<br><br>
+            Mild: CFSI < 35 &nbsp;|&nbsp; Moderate: 35 ≤ CFSI < 65 &nbsp;|&nbsp; Severe: CFSI ≥ 65
+        </div>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Radiomic Feature Definitions</h2>
+        <table class="tech-table">
+            <tr><td>Mean Intensity</td><td>Average pixel value within bone ROI</td></tr>
+            <tr><td>Entropy</td><td>Shannon entropy of intensity histogram — disorder measure</td></tr>
+            <tr><td>Energy</td><td>Sum of squared histogram probabilities — uniformity measure</td></tr>
+            <tr><td>GLCM Contrast</td><td>Gray-level co-occurrence matrix contrast via edge detection</td></tr>
+            <tr><td>Homogeneity</td><td>Inverse difference moment — texture regularity</td></tr>
+            <tr><td>Zone Percentage</td><td>Percentage of image classified as bone tissue</td></tr>
+            <tr><td>Cortical Thickness</td><td>Estimated cortical bone thickness from mask analysis</td></tr>
+            <tr><td>Micro-fracture Density</td><td>High-gradient point density within bone regions</td></tr>
+            <tr><td>Fragmentation Index</td><td>Number of disconnected bone components per unit area</td></tr>
+        </table>
+    </div>
+
+    <div class="section-block">
+        <h2 class="section-title">Session Statistics</h2>
+        <div class="metrics-grid" id="sessionStats">
+            <div class="metric-card">
+                <div class="metric-label">Cases Analyzed</div>
+                <div class="metric-value" id="statCases">0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Avg Confidence</div>
+                <div class="metric-value" id="statConfidence">—</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Severity Distribution</div>
+                <div class="metric-value" id="statSeverity">—</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    fetch('/api/history')
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('statCases').textContent = data.length;
+            if (data.length > 0) {
+                const avgConf = data.reduce((s, c) => s + c.confidence, 0) / data.length;
+                document.getElementById('statConfidence').textContent = (avgConf * 100).toFixed(0) + '%';
+                const sevCounts = { Mild: 0, Moderate: 0, Severe: 0 };
+                data.forEach(c => { if (sevCounts[c.severity] !== undefined) sevCounts[c.severity]++; });
+                document.getElementById('statSeverity').textContent =
+                    Object.entries(sevCounts).map(([k,v]) => k[0] + ':' + v).join(' / ');
+            }
+        });
+</script>
+{% endblock %}

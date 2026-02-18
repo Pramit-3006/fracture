@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% set active = "home" %}
+
+{% block content %}
+<div class="landing">
+    <h1 class="landing-title">Fracture Characterization<br>Platform</h1>
+    <p class="landing-subtitle">Upload Radiograph</p>
+    <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.bmp,.tiff">
+        <p class="upload-zone-label">Drag & Drop Wrist Radiograph</p>
+        <p class="upload-zone-hint">PNG / JPG / BMP / TIFF — Max 16MB</p>
+        <p class="file-name" id="fileName"></p>
+    </div>
+    <button class="btn-analyze" id="analyzeBtn" disabled>Analyze</button>
+</div>
+<div class="processing-overlay" id="processingOverlay">
+    <p class="processing-text">Processing Radiograph</p>
+    <p class="processing-stage" id="processingStage">Stage 1 — Input Acquisition</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/upload.js"></script>
+{% endblock %}

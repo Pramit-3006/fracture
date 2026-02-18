@@ -1,0 +1,629 @@
+DOCUMENT 1
+Application Website Design Specification
+
+(Black–White Minimal Clinical Interface)
+
+1. Design Philosophy
+
+The application website must represent:
+
+Clinical seriousness
+
+Scientific precision
+
+Minimal cognitive load
+
+Medical professionalism
+
+The aesthetic avoids AI-template visuals and instead follows radiology workstation philosophy:
+
+Core Principles
+
+Monochrome palette (pure black + white + grayscale)
+
+Typography-driven layout
+
+No gradients
+
+No rounded cartoon cards
+
+Hard edges
+
+High contrast
+
+Grid-based spacing
+
+Medical-console inspired UI
+
+The design should feel like:
+
+A diagnostic workstation, not a startup landing page.
+
+2. Color System
+Element	Color
+Background	#000000
+Primary text	#FFFFFF
+Secondary text	#A0A0A0
+Borders	#333333
+Bounding boxes	#FFFFFF
+Warning / fracture highlight	#EAEAEA
+
+No accent colors.
+
+No shadows.
+
+No blur.
+
+3. Typography
+
+Primary Font:
+
+Inter / IBM Plex Sans
+
+Secondary:
+
+JetBrains Mono (for metrics)
+
+Hierarchy:
+
+Title: 32px Bold
+
+Section headers: 18px Medium
+
+Body: 14px Regular
+
+Metrics: 13px Mono
+
+Letter spacing slightly expanded.
+
+4. Layout Structure
+Landing Screen
+
+Centered vertical layout:
+
+[ SYSTEM TITLE ]
+
+Upload Radiograph
+
+Drag & Drop Zone
+
+[ Analyze ]
+
+Small footer:
+AI-Assisted Radiographic Fracture Characterization
+
+
+No hero images.
+
+No illustrations.
+
+Diagnostic Dashboard
+
+Split screen:
+
+LEFT PANEL (60%)         RIGHT PANEL (40%)
+
+X-ray Viewer             Clinical Report
+
+Bounding boxes           Fracture Type
+Zoom controls            Location
+FCET toggle              Displacement
+Fuzzy overlay            Severity Index
+
+5. Functional UI Components
+Image Viewer
+
+Pan
+
+Zoom
+
+Toggle overlays:
+
+FCET
+
+Fuzzy segmentation
+
+Detection boxes
+
+Clinical Panel
+
+Structured medical report:
+
+Fracture Morphology
+Anatomical Location
+Displacement (mm)
+Angulation (degrees)
+Radiomic Severity Index
+Confidence
+
+6. Interaction Design
+
+No animations.
+
+No parallax.
+
+No unnecessary transitions.
+
+All actions immediate.
+
+7. Pages
+
+Diagnosis Interface
+
+Case History
+
+System Architecture
+
+Research Metrics
+
+This design ensures:
+
+✅ Trust
+✅ Clinical authority
+✅ Scientific seriousness
+✅ Zero visual noise
+
+📄 DOCUMENT 2
+Complete Technical Pipeline Specification
+Stage 1 — Input Acquisition
+
+Digital wrist radiographs:
+
+𝑋
+∈
+𝑅
+640
+×
+640
+X∈R
+640×640
+
+Converted to grayscale.
+
+Normalized.
+
+Stage 2 — FCET Enhancement
+
+Feature Preserving Contrast Enhancement:
+
+𝐼
+𝑒
+𝑛
+ℎ
+=
+𝛼
+𝐼
++
+(
+1
+−
+𝛼
+)
+𝐺
+I
+enh
+	​
+
+=αI+(1−α)G
+
+Purpose:
+
+Cortical edge strengthening
+
+Trabecular amplification
+
+Fracture visibility
+
+Stage 3 — True Spatial Fuzzy C-Means
+
+Clusters:
+
+Cortical bone
+
+Trabecular bone
+
+Soft tissue
+
+Background
+
+Spatial membership:
+
+𝑢
+𝑖
+𝑘
+′
+=
+𝑢
+𝑖
+𝑘
++
+𝑆
+𝑖
+𝑘
+2
+u
+ik
+′
+	​
+
+=
+2
+u
+ik
+	​
+
++S
+ik
+	​
+
+	​
+
+
+Background forced to zero.
+
+Output:
+
+Binary bone masks.
+
+Stage 4 — Cellular Radiomics
+
+Extracted features:
+
+First Order
+
+Mean
+
+Entropy
+
+Energy
+
+Texture
+
+GLCM contrast
+
+Homogeneity
+
+Zone percentage
+
+Morphology
+
+Cortical thickness
+
+Micro-fracture density
+
+Fragmentation index
+
+Radiomic vector:
+
+𝑅
+=
+[
+𝑟
+1
+.
+.
+.
+𝑟
+𝑛
+]
+R=[r
+1
+	​
+
+...r
+n
+	​
+
+]
+Stage 5 — Deep Feature Encoding
+
+Input tensor:
+
+𝑋
+=
+[
+𝐹
+𝐶
+𝐸
+𝑇
++
+𝐹
+𝑢
+𝑧
+𝑧
+𝑦
++
+𝑅
+𝑎
+𝑑
+𝑖
+𝑜
+𝑚
+𝑖
+𝑐
+𝑠
+]
+X=[FCET+Fuzzy+Radiomics]
+
+Passed through:
+
+ResNet50 + GAM
+
+𝐹
+′
+=
+𝐹
+⊗
+𝐴
+𝑠
+⊗
+𝐴
+𝑐
+F
+′
+=F⊗A
+s
+	​
+
+⊗A
+c
+	​
+
+Stage 6 — YOLOv11 Detection
+
+Multi-scale prediction:
+
+Bounding box
+
+Confidence
+
+Fracture class
+
+Loss:
+
+𝐿
+=
+𝐿
+𝑏
+𝑜
+𝑥
++
+𝐿
+𝑜
+𝑏
+𝑗
++
+𝐿
+𝑐
+𝑙
+𝑠
+L=L
+box
+	​
+
++L
+obj
+	​
+
++L
+cls
+	​
+
+Stage 7 — Orthopedic Fracture Analytics
+
+Automatically computes:
+
+Morphology
+
+Transverse
+
+Oblique
+
+Spiral
+
+Comminuted
+
+Greenstick
+
+Displacement
+𝐷
+=
+(
+𝑥
+2
+−
+𝑥
+1
+)
+2
++
+(
+𝑦
+2
+−
+𝑦
+1
+)
+2
+D=
+(x
+2
+	​
+
+−x
+1
+	​
+
+)
+2
++(y
+2
+	​
+
+−y
+1
+	​
+
+)
+2
+	​
+
+Angulation
+
+Principal axis calculation.
+
+Location
+
+Distal radius
+
+Ulna
+
+Physeal plate
+
+Stage 8 — Composite Fracture Severity Index
+𝐶
+𝐹
+𝑆
+𝐼
+=
+𝑤
+1
+𝐷
++
+𝑤
+2
+𝐹
+𝐼
++
+𝑤
+3
+𝐸
+𝑛
+𝑡
+𝑟
+𝑜
+𝑝
+𝑦
++
+𝑤
+4
+𝐴
+𝑛
+𝑔
+𝑢
+𝑙
+𝑎
+𝑡
+𝑖
+𝑜
+𝑛
+CFSI=w
+1
+	​
+
+D+w
+2
+	​
+
+FI+w
+3
+	​
+
+Entropy+w
+4
+	​
+
+Angulation
+
+Grades:
+
+Mild
+
+Moderate
+
+Severe
+
+📄 DOCUMENT 3
+System Integration & Final Output
+Backend Stack
+
+Python + PyTorch
+Flask API
+
+Modules:
+
+FCET Engine
+
+Fuzzy Segmentation
+
+Radiomics Extractor
+
+YOLOv11 Detector
+
+Clinical Analyzer
+
+Frontend
+
+HTML + CSS + JS
+
+Image viewer with overlays.
+
+Integration Flow
+User Upload
+ ↓
+FCET Enhancement
+ ↓
+Spatial Fuzzy Segmentation
+ ↓
+Radiomics Extraction
+ ↓
+YOLO Detection
+ ↓
+Fracture Analytics
+ ↓
+Severity Index
+ ↓
+Clinical Report
+
+Real-Time Output
+
+Displayed to user:
+
+Visual
+
+Bounding box
+
+Bone mask
+
+Enhanced image
+
+Textual
+Complete displaced transverse fracture
+Distal radius metaphysis
+Displacement: 3.2 mm
+Angulation: 11°
+Radiomic Severity: Severe
+Confidence: 94%
+
+System Capabilities
+
+Your system now performs:
+
+✅ Detection
+✅ Segmentation
+✅ Radiomics
+✅ Orthopedic classification
+✅ Severity grading
+✅ Clinical reporting
+
+Final Product Identity
+
+This is no longer:
+
+❌ Just object detection
+
+It is now:
+
+AI Radiographic Fracture Characterization Platform
+
+Equivalent to early-stage CAD (Computer Aided Diagnosis).

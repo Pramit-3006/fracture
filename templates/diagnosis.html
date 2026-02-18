@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% set active = "home" %}
+
+{% block content %}
+<div class="dashboard" id="dashboard">
+    <div class="panel-left">
+        <div class="viewer-header">
+            <span class="viewer-title">X-Ray Viewer</span>
+            <div class="viewer-controls">
+                <button class="viewer-btn active" data-view="overlay" onclick="switchView('overlay')">Detection</button>
+                <button class="viewer-btn" data-view="fcet" onclick="switchView('fcet')">FCET</button>
+                <button class="viewer-btn" data-view="fuzzy" onclick="switchView('fuzzy')">Fuzzy</button>
+                <button class="viewer-btn" data-view="mask" onclick="switchView('mask')">Mask</button>
+                <button class="viewer-btn" data-view="original" onclick="switchView('original')">Original</button>
+            </div>
+        </div>
+        <div class="image-container" id="imageContainer">
+            <img id="viewerImage" src="" alt="Radiograph">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomIn()">+</button>
+                <button class="zoom-btn" onclick="zoomOut()">−</button>
+                <button class="zoom-btn" onclick="resetZoom()">⟳</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-right">
+        <div class="case-id-badge" id="caseIdBadge">CASE: ---</div>
+
+        <div class="report-section">
+            <div class="report-header">Clinical Report</div>
+            <div class="report-row">
+                <span class="report-label">Fracture Morphology</span>
+                <span class="report-value" id="rMorphology">—</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Anatomical Location</span>
+                <span class="report-value" id="rLocation">—</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Displacement</span>
+                <span class="report-value" id="rDisplacement">— mm</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Angulation</span>
+                <span class="report-value" id="rAngulation">—°</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Radiomic Severity Index</span>
+                <span class="report-value" id="rSeverity">—</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Severity Grade</span>
+                <span class="report-value" id="rGrade">—</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Confidence</span>
+                <span class="report-value" id="rConfidence">—%</span>
+            </div>
+            <div class="report-row">
+                <span class="report-label">Total Fractures Detected</span>
+                <span class="report-value" id="rTotal">—</span>
+            </div>
+            <div class="report-description" id="rDescription">—</div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-header">Detections</div>
+            <div class="detection-list" id="detectionList"></div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-header">Radiomic Features</div>
+            <div class="radiomics-grid" id="radiomicsGrid"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/diagnosis.js"></script>
+{% endblock %}

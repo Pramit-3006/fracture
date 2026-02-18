@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set active = "history" %}
+
+{% block content %}
+<div class="page-container">
+    <h1 class="page-title">Case History</h1>
+    <div id="historyContent">
+        <div class="empty-state">No cases analyzed yet</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/history.js"></script>
+{% endblock %}

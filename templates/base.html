@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>ARFCP — AI Radiographic Fracture Characterization</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-title">ARFCP</div>
+        <ul class="nav-links">
+            <li><a href="/" class="{% if active == 'home' %}active{% endif %}">Diagnosis</a></li>
+            <li><a href="/history" class="{% if active == 'history' %}active{% endif %}">Case History</a></li>
+            <li><a href="/architecture" class="{% if active == 'architecture' %}active{% endif %}">Architecture</a></li>
+            <li><a href="/metrics" class="{% if active == 'metrics' %}active{% endif %}">Metrics</a></li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">AI-Assisted Radiographic Fracture Characterization Platform</div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
